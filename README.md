@@ -1,1 +1,0 @@
-# Gear-Hub-Katkin-Park
