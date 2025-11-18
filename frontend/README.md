@@ -1,1 +1,0 @@
-KP-LabIt-Frontend
