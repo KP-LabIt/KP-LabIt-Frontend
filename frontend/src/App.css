@@ -1,0 +1,12 @@
+body {
+  background-color: rgb(50, 47, 47);
+}
+
+.titleTest {
+  color: aliceblue;
+  font-size: 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
