@@ -1,5 +1,6 @@
 body {
-  background-color: rgb(50, 47, 47);
+  background: #111;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .titleTest {
@@ -8,5 +9,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+h1 {
+  font-size: 2vw;
 }
