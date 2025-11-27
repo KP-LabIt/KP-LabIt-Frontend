@@ -1,0 +1,1 @@
+// Všetky requesty na backend pokope (pre čistejší kód a jednoduchší maintenance)
