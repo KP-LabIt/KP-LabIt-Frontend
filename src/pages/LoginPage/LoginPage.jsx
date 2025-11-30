@@ -1,16 +1,20 @@
 // Stránka pre prihlasovanie
 
 import { useState } from "react";
-import "./LoginPage.css"
+import { useNavigate } from "react-router-dom";
+import "./LoginPage.css";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine, RiMicrosoftFill } from "react-icons/ri";
 import { PiMicrosoftOutlookLogoFill } from "react-icons/pi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import logoDescription from '../../assets/kp-logo-description.png'
+import { LoginFetch } from "../../services/api.jsx";
+import getPayloadFromToken from "../../utils/tokenExtractor.jsx";
 
 
 const LoginPage = () => {
 
+    const navigate = useNavigate();
 
     // state variables
     const [showPassword, setShowPassword] = useState(false);
@@ -19,9 +23,28 @@ const LoginPage = () => {
     const [error, setError] = useState("");
 
 
-    // logika prihlásenia
+    // logika prihlásenia (odosle request na backend, ulozi token do localStorage,
+    // ulozi udaje o user do localStorage z tokenu, redirectne usera na korespondujúcu url)
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        await LoginFetch({email, password}, setError);
+
+        const payload = await getPayloadFromToken()
+
+        const userName = (payload.firstName + " " + payload.lastName);
+        const userRole = payload.role;
+
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("userRole", userRole);
+
+        const roleRedirect = {
+            student: "/student/home",
+            teacher: "/teacher/home",
+            admin: "/admin/home"
+        }
+
+        navigate(roleRedirect[userRole]);
 
     }
 
@@ -29,11 +52,15 @@ const LoginPage = () => {
     // prihlasovanie pomocou Microsoftu
     const handleMicrosoftAuth = () => {
 
+        setError("To be added.")
+
     }
 
 
     // prihlasovanie pomocou Outlooku
     const handleOutlookAuth = () => {
+
+        setError("To be added.")
 
     }
 
@@ -72,6 +99,7 @@ const LoginPage = () => {
                                        placeholder="Školský email"
                                        value={email}
                                        onChange={(e) => setEmail(e.target.value)}
+                                       required
                                 />
                             </div>
 
@@ -82,13 +110,14 @@ const LoginPage = () => {
                                        placeholder="Heslo"
                                        value={password}
                                        onChange={(e) => setPassword(e.target.value)}
+                                       required
                                 />
                                 <span className="show-password" onClick={() => setShowPassword(!showPassword)}>
                                     {showPassword ? <FiEye/> : <FiEyeOff/>}
                                 </span>
                             </div>
 
-                            <a className="login-problem">
+                            <a className="login-problem" href="/login-problem">
                                 Máte problém s prihlásením?
                             </a>
 

@@ -1,1 +1,0 @@
-// Funkcia pre zabezpečenie UX podľa rolí (každa rola uvidí len to čo má)
