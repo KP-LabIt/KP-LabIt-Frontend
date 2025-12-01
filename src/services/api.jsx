@@ -3,11 +3,11 @@
 const BASE_URL = "http://localhost:8000/";
 
 // Funkcia na prihlasenie ktorá vracia token a stará sa o error handling
-const LoginFetch = async ({username, password}, setError) => {
+const LoginFetch = async ({email, password}, setError) => {
 
     const url = BASE_URL + "/api/accounts/login/";
 
-    const data = { username, password };
+    const data = { email, password };
 
     try {
         const response = await fetch(url, {
