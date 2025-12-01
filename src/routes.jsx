@@ -10,6 +10,7 @@ import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage.jsx';
 import StudentActivityPage from './pages/StudentActivityPage/StudentActivityPage.jsx';
 import TeacherActivityPage from './pages/TeacherActivityPage/TeacherActivityPage.jsx';
 import AdminPage from './pages/AdminPage/AdminPage.jsx';
+import ChangePasswordPage from './pages/ChangePasswordPage/ChangePasswordPage.jsx';
 
 
 export default function AppRouter() {
@@ -36,13 +37,33 @@ export default function AppRouter() {
             },
 
 
-            // Unauthorized Route
+            // General Routes
             {
                 path: "/unauthorized",
                 element: (
                     <ProtectedRoute
                         allowedRoles={["student", "teacher", "admin"]}
                         element={<UnauthorizedPage />}
+                    />
+                ),
+            },
+
+            {
+                path: "/change-password",
+                element: (
+                    <ProtectedRoute
+                        allowedRoles={["student", "teacher", "admin"]}
+                        element={<ChangePasswordPage />}
+                    />
+                ),
+            },
+
+            {
+                path: "/change-password",
+                element: (
+                    <ProtectedRoute
+                        allowedRoles={["student", "teacher", "admin"]}
+                        element={<ChangePasswordPage />}
                     />
                 ),
             },

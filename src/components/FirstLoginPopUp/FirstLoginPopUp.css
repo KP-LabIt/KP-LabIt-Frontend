@@ -1,0 +1,32 @@
+.popup-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(35, 35, 35);
+    border-radius: 1rem;
+    padding: 4rem;
+    border: 2px solid rgb(21, 57, 2);
+    box-shadow: 0 0 20px rgb(21, 57, 2, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.title {
+
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.text {
+    margin-bottom: -1rem;
+}
+
+.redirect-button {
+    margin-top: 3rem;
+}

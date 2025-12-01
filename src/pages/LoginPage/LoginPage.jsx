@@ -7,9 +7,10 @@ import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine, RiMicrosoftFill } from "react-icons/ri";
 import { PiMicrosoftOutlookLogoFill } from "react-icons/pi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import logoDescription from '../../assets/kp-logo-description.png'
+import BottomWatermark from "../../components/BottomWatermark/BottomWatermark.jsx";
 import { LoginFetch } from "../../services/api.jsx";
 import getPayloadFromToken from "../../utils/tokenExtractor.jsx";
+import FirstLoginPopUp from "../../components/FirstLoginPopUp/FirstLoginPopUp.jsx";
 
 
 const LoginPage = () => {
@@ -21,6 +22,10 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    // state variable pre change-password popup okno pre oznamenie userovi o zmene hesla po prvom prihlásení
+    const [changePassword, setChangePassword] = useState(false);
 
 
     // logika prihlásenia (odosle request na backend, ulozi token do localStorage,
@@ -28,8 +33,16 @@ const LoginPage = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        setLoading(true);
+
+        //odoslať request na backend na prihlásenie
         await LoginFetch({email, password}, setError);
 
+        if (!error) {
+            setLoading(false);
+        }
+
+        // extrakcia údajov o userovi z tokenu a uloženie do localStorage
         const payload = await getPayloadFromToken()
 
         const userName = (payload.firstName + " " + payload.lastName);
@@ -38,15 +51,25 @@ const LoginPage = () => {
         localStorage.setItem("userName", userName);
         localStorage.setItem("userRole", userRole);
 
-        const roleRedirect = {
-            student: "/student/home",
-            teacher: "/teacher/home",
-            admin: "/admin/home"
+        // Redirect na change-password pri prvom prihlásení
+        const firstLogin = localStorage.getItem("firstLogin");
+
+        if (firstLogin === "true") {
+            setChangePassword(true);
         }
 
-        navigate(roleRedirect[userRole]);
+        else {
+            const roleRedirect = {
+                student: "/student/home",
+                teacher: "/teacher/home",
+                admin: "/admin/home"
+            }
+            navigate(roleRedirect[userRole]);
+        }
 
-    }
+        setLoading(false);
+
+        }
 
 
     // prihlasovanie pomocou Microsoftu
@@ -126,6 +149,7 @@ const LoginPage = () => {
                             </button>
 
                             { error && <p className="error">{error}</p>}
+                            { loading && <p className="loading">Loading..</p> }
 
                             <p className="or-text">
                                 <span className="or-line" />
@@ -149,7 +173,9 @@ const LoginPage = () => {
                 </div>
             </div>
 
-            <img className="logo-description" src={/** @type {string} */ (logoDescription)} alt="logo" />
+            {<BottomWatermark/>}
+
+            { changePassword && <FirstLoginPopUp/>}
 
         </div>
     )
