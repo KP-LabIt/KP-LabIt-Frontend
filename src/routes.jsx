@@ -4,13 +4,14 @@ import { createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './utils/ProtectedRoute.jsx';
 import GuestRoute from './utils/GuestRoute.jsx';
 
-import RootPage from "./pages/RootPage/RootPage.jsx";
-import LoginPage from './pages/LoginPage/LoginPage.jsx';
-import UnauthorizedPage from './pages/UnauthorizedPage/UnauthorizedPage.jsx';
-import StudentActivityPage from './pages/StudentActivityPage/StudentActivityPage.jsx';
-import TeacherActivityPage from './pages/TeacherActivityPage/TeacherActivityPage.jsx';
-import AdminPage from './pages/AdminPage/AdminPage.jsx';
-import ChangePasswordPage from './pages/ChangePasswordPage/ChangePasswordPage.jsx';
+import RootPage from "./pages/GeneralPages/RootPage/RootPage.jsx";
+import LoginPage from './pages/GeneralPages/LoginPage/LoginPage.jsx';
+import UnauthorizedPage from './pages/GeneralPages/UnauthorizedPage/UnauthorizedPage.jsx';
+import StudentActivityPage from './pages/StudentPages/StudentActivityPage/StudentActivityPage.jsx';
+import TeacherActivityPage from './pages/TeacherPages/TeacherActivityPage/TeacherActivityPage.jsx';
+import AdminPage from './pages/AdminPages/AdminPage/AdminPage.jsx';
+import ResetPasswordPage from './pages/GeneralPages/ResetPasswordPage/ResetPasswordPage.jsx';
+import ResetPasswordConfirmPage from "./pages/GeneralPages/ResetPasswordConfirmPage/ResetPasswordConfirmPage.jsx";
 
 
 export default function AppRouter() {
@@ -49,13 +50,13 @@ export default function AppRouter() {
             },
 
             {
-                path: "/change-password",
-                element: (
-                    <ProtectedRoute
-                        allowedRoles={["student", "teacher", "admin"]}
-                        element={<ChangePasswordPage />}
-                    />
-                ),
+                path: "/reset-password",
+                element: <ResetPasswordPage />,
+            },
+
+            {
+                path: "/reset-password-confirm",
+                element: <ResetPasswordConfirmPage />,
             },
 
             {
@@ -63,7 +64,7 @@ export default function AppRouter() {
                 element: (
                     <ProtectedRoute
                         allowedRoles={["student", "teacher", "admin"]}
-                        element={<ChangePasswordPage />}
+                        element={<ResetPasswordPage />}
                     />
                 ),
             },

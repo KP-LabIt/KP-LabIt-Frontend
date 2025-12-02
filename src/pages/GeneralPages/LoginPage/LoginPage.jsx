@@ -7,10 +7,10 @@ import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine, RiMicrosoftFill } from "react-icons/ri";
 import { PiMicrosoftOutlookLogoFill } from "react-icons/pi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import BottomWatermark from "../../components/BottomWatermark/BottomWatermark.jsx";
-import { LoginFetch } from "../../services/api.jsx";
-import getPayloadFromToken from "../../utils/tokenExtractor.jsx";
-import FirstLoginPopUp from "../../components/FirstLoginPopUp/FirstLoginPopUp.jsx";
+import BottomWatermark from "../../../components/BottomWatermark/BottomWatermark.jsx";
+import { LoginFetch } from "../../../services/api.jsx";
+import getPayloadFromToken from "../../../utils/tokenExtractor.jsx";
+import FirstLoginPopUp from "../../../components/FirstLoginPopUp/FirstLoginPopUp.jsx";
 
 
 const LoginPage = () => {
@@ -100,7 +100,7 @@ const LoginPage = () => {
                         <h2 className="sub-title upper">
                             Katkin Park
                         </h2>
-                        <h1 className="title">
+                        <h1 className="login-title">
                             GearHub
                         </h1>
                         <h2 className="sub-title lower">
@@ -110,14 +110,14 @@ const LoginPage = () => {
 
                     {/* Pravá strana */}
                     <div className="container-right">
-                        <h2 className="form-title">
+                        <h2 className="login-form-title">
                             Prihlásenie
                         </h2>
-                        <form className="form" onSubmit={handleLogin}>
+                        <form className="login-form" onSubmit={handleLogin}>
 
-                            <div className="input-container">
+                            <div className="login-input-container">
                                 <MdOutlineEmail className="icon" size={25} />
-                                <input className="input"
+                                <input className="login-input"
                                        type="email"
                                        placeholder="Školský email"
                                        value={email}
@@ -126,9 +126,9 @@ const LoginPage = () => {
                                 />
                             </div>
 
-                            <div className="input-container">
+                            <div className="login-input-container">
                                 <RiLockPasswordLine className="icon" size={25} />
-                                <input className="input"
+                                <input className="login-input"
                                        type={showPassword ? "text" : "password"}
                                        placeholder="Heslo"
                                        value={password}
@@ -140,11 +140,11 @@ const LoginPage = () => {
                                 </span>
                             </div>
 
-                            <a className="login-problem" href="/login-problem">
+                            <a className="login-problem" onClick={() => navigate("/reset-password")}>
                                 Máte problém s prihlásením?
                             </a>
 
-                            <button className="button">
+                            <button className="login-button">
                                 Prihlásiť
                             </button>
 

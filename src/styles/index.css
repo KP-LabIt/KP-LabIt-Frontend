@@ -6,6 +6,7 @@
     font-family: Poppins, system-ui, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
+    font-size: 16px;
 
     color-scheme: dark;
     color: rgba(255, 255, 255, 0.8);
@@ -15,6 +16,8 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    text-align: center;
 }
 
 
@@ -70,7 +73,7 @@ button:focus, button:focus-visible {
     transition: all 0.5s ease, outline-color 0.5s ease;
 }
 
-.form {
+form {
     display: flex;
     flex-direction: column;
 }
@@ -80,6 +83,11 @@ button:focus, button:focus-visible {
 
     button:focus, button:focus-visible {
         outline: 2px solid rgba(255, 255, 255, 0.85);
+    }
+
+    :root {
+        font-size: 14px;
+        text-align: center;
     }
 
 }

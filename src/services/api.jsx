@@ -2,6 +2,8 @@
 
 const BASE_URL = "http://localhost:8000/";
 
+
+
 // Funkcia na prihlasenie ktorá vracia token a stará sa o error handling
 const LoginFetch = async ({email, password}, setError) => {
 
@@ -20,11 +22,7 @@ const LoginFetch = async ({email, password}, setError) => {
 
         if (response.ok) {
 
-            const mustChangePassword = body.must_change_password;
-
-            if (mustChangePassword === true) {
-                localStorage.setItem("firstLogin", mustChangePassword);
-            }
+            localStorage.setItem("firstLogin", body.must_change_password);
 
             if (body.token) {
                 localStorage.setItem("token", body.token);
@@ -37,51 +35,7 @@ const LoginFetch = async ({email, password}, setError) => {
         }
 
         else {
-            setError("Chyba pri prihlasovaní: " + body.detail);
-        }
-    }
-
-    catch (err) {
-        setError("Chyba pri odosielaní dát: ")
-        console.log(err)
-    }
-};
-
-
-// Funkcia na zmenu hesla
-const ChangePasswordFetch = async ({oldPassword, newPassword}, setError, setSuccess) => {
-
-    const url = BASE_URL + "api/accounts/change_password/";
-
-    if (oldPassword === newPassword) {
-        setError("Heslá, nemôžu byť rovnaké.")
-        return
-    }
-
-    const user = { "old_password": oldPassword, "new_password": newPassword };
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json" ,
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            },
-            body: JSON.stringify(user)
-        })
-
-        const body = await response.json();
-
-        if (response.ok) {
-            const mustChangePassword = "false";
-            localStorage.setItem("firstLogin", mustChangePassword);
-
-            setSuccess(true)
-        }
-
-        else {
-            setError("Chyba pri zmene hesla: " + body.detail);
-            console.log(body)
+            setError("Chyba pri prihlasovaní: " + body.message);
         }
     }
 
@@ -92,4 +46,135 @@ const ChangePasswordFetch = async ({oldPassword, newPassword}, setError, setSucc
 };
 
 
-export { LoginFetch, ChangePasswordFetch };
+
+// Funkcia na zmenu hesla
+const ResetPasswordFetch = async (email, setError, setSuccess) => {
+
+    const url = BASE_URL + "api/accounts/reset_password/";
+
+    try {
+
+        // odosielanie emailu na backend
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" ,
+            },
+            body: JSON.stringify(email)
+        })
+
+
+        // konvertacia odpovede na text alebo json podla content-type
+        const contentType = response.headers.get("content-type") || "";
+        const rawBody = contentType.includes("application/json")
+            ? await response.json().catch(() => null)
+            : await response.text().catch(() => "");
+
+
+        // vytvorenie error massage z odpovede z backendu
+        let detail = "";
+
+        if (typeof rawBody === "string" && rawBody.trim()) {
+            detail = rawBody.trim();
+        }
+        else if (Array.isArray(rawBody) && rawBody.length) {
+            detail = rawBody.join(" ");
+        }
+        else if (rawBody && typeof rawBody === "object") {
+
+            const firstVal = Object.values(rawBody)[0];
+            if (Array.isArray(firstVal)) detail = firstVal.join(" ");
+            else if (typeof firstVal === "string") detail = firstVal;
+        }
+
+        const msg = detail
+            ? "Chyba pri odosielaní emailu: " + detail
+            : "Chyba pri odosielaní emailu.";
+
+
+
+        // setnutie success
+        if (response.ok) {
+            setSuccess(true)
+        }
+
+
+        // setnutie erroru
+        else {
+            setError(msg);
+            console.log(detail)
+        }
+    }
+
+    catch (err) {
+        setError("Chyba pri odosielaní dát: " + err.message)
+        console.log(err)
+    }
+};
+
+
+// funkcia pre potvrdenie zmeny hesla ( odoslanie noveho hesla do backendu )
+const ResetPasswordFetchConfirm = async ({uid, token, newPassword, reNewPassword}, setError, setSuccess) => {
+
+    const url = BASE_URL + "api/accounts/reset_password_confirm/";
+
+    const payload = { uid, token, "new_password": newPassword, "re_new_password": reNewPassword };
+
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        })
+
+        // konvertacia odpovede na text alebo json podla content-type
+        const contentType = res.headers.get("content-type") || "";
+        const rawBody = contentType.includes("application/json")
+            ? await res.json().catch(() => null)
+            : await res.text().catch(() => "");
+
+
+        // vytvorenie error massage z odpovede z backendu
+        let detail1 = "";
+
+        if (typeof rawBody === "string" && rawBody.trim()) {
+            detail1 = rawBody.trim();
+        }
+        else if (Array.isArray(rawBody) && rawBody.length) {
+            detail1 = rawBody.join(" ");
+        }
+        else if (rawBody && typeof rawBody === "object") {
+
+            const firstVal = Object.values(rawBody)[0];
+            if (Array.isArray(firstVal)) detail1 = firstVal.join(" ");
+            else if (typeof firstVal === "string") detail1 = firstVal;
+        }
+
+        const msg = detail1
+            ? "Chyba pri odosielaní emailu: " + detail1
+            : "Chyba pri odosielaní emailu.";
+
+
+
+        // setnutie success
+        if (res.ok) {
+            setSuccess(true)
+        }
+
+
+        // setnutie erroru
+        else {
+            setError(msg);
+            console.log(detail1)
+        }
+
+    }
+
+    catch (err) {
+        setError("Chyba pri odosielaní dát: ")
+        console.log(err)
+    }
+
+}
+
+export { LoginFetch, ResetPasswordFetch, ResetPasswordFetchConfirm };

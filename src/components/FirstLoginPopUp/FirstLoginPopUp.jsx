@@ -6,24 +6,22 @@ export default function FirstLoginPopUp() {
     const navigate = useNavigate();
 
     const handleRedirect = () => {
-        navigate("/change-password");
+        navigate("/reset-password");
     }
 
     return (
-        <div className="popup-window">
-            <h1 className="title">
+        <div className="login-popup-window">
+            <h1 className="login-popup-title">
                 Upozornenie!
             </h1>
-            <h2 className="subtitle">
+            <h2 className="login-popup-subtitle">
                 Toto je vaše prvé prihlásenie, zmeňte si heslo!
             </h2>
-            <p className="text">
+            <p className="login-popup-text">
                 Detekovali sme, že ste si ešte nezmenili heslo,
-            </p>
-            <p className="text">
                 musíte si automaticky vygenerované heslo zmeniť na vaše vlastné.
             </p>
-            <button className="redirect-button" onClick={handleRedirect}>
+            <button className="login-popup-redirect-button" onClick={handleRedirect}>
                 Zmeniť heslo
             </button>
         </div>

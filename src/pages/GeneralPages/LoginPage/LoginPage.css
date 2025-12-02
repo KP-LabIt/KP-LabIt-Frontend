@@ -7,7 +7,7 @@
 }
 
 .login-page-logo {
-    background-image: url("../../assets/kp-leaf.png");
+    background-image: url("../../../assets/kp-leaf.png");
     background-repeat: no-repeat;
     background-position: 8%;
     background-size: 275px;
@@ -44,7 +44,7 @@
     padding-left: 2rem;
 }
 
-.title {
+.login-title {
     margin: 0;
 }
 
@@ -65,33 +65,33 @@
     margin-top: 0.5rem;
 }
 
-.form-title {
+.login-form-title {
     margin: 0 0 1rem 0;
 }
 
-.form {
+.login-form {
     gap: 1rem;
     width: 100%;
 }
 
-.input-container {
+.login-input-container {
     position: relative;
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 0.25rem;
     width: 100%;
     transition: all 0.5s ease;
 }
 
-.input-container:hover {
+.login-input-container:hover {
     transform: scale(1.0125);
 }
 
-.input-container:focus-within {
+.login-input-container:focus-within {
     transform: scale(1);
 }
 
-.input {
+.login-input {
     padding: 0.7em 2.35em;
     font-size: 1rem;
     border: none;
@@ -99,12 +99,12 @@
     flex: 1;
 }
 
-.input::placeholder {
+.login-input::placeholder {
     font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
 }
 
-input:focus {
+.login-input:focus {
     outline: 2px solid rgb(21, 57, 2);
 }
 
@@ -133,7 +133,7 @@ input:focus {
     margin-bottom: 0;
 }
 
-.button {
+.login-button {
     flex: 1;
     color: rgba(255, 255, 255, 0.9);
 }
@@ -143,6 +143,7 @@ input:focus {
     font-size: 0.8rem;
     font-weight: 500;
     margin: -0.5rem;
+    text-align: center;
 }
 
 .loading {
@@ -240,11 +241,7 @@ input:focus {
         padding-top: 2rem;
     }
 
-    .input {
+    .login-input {
         width: 100%;
-    }
-
-    .logo-description {
-        width: 20vw;
     }
 }

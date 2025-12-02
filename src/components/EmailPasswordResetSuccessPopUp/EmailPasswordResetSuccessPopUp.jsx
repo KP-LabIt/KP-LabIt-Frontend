@@ -1,7 +1,7 @@
-import './PasswordChangeSuccessPopUp.css'
+import './EmailPasswordResetSuccessPopUp.css'
 import {useNavigate} from "react-router-dom";
 
-export default function PasswordChangeSuccessPopUp() {
+export default function EmailPasswordResetSuccessPopUp() {
 
     const navigate = useNavigate();
 
@@ -25,15 +25,15 @@ export default function PasswordChangeSuccessPopUp() {
     }
 
     return (
-        <div className="popup-window">
-            <h1 className="title">
-                Heslo bolo zmenené!
+        <div className="pass-success-popup-window">
+            <h1 className="pass-success-title">
+                Email bol odoslaný!
             </h1>
-            <h2 className="subtitle">
-                Vaše heslo bolo úspešne zmenené.
-            </h2>
-            <button className="redirect-button" onClick={handleRedirect}>
-                Pokračovať
+            <p className="pass-success-subtitle">
+                Skontrolujte si váš email, a postupujte podľa pokynov.
+            </p>
+            <button className="pass-success-redirect-button" onClick={handleRedirect}>
+                Hotovo
             </button>
         </div>
     )

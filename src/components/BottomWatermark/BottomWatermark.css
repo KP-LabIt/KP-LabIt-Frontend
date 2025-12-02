@@ -6,3 +6,9 @@
     opacity: 0.8;
 
 }
+
+@media (max-width: 480px) {
+    .logo-description {
+        width: 20vw;
+    }
+}
