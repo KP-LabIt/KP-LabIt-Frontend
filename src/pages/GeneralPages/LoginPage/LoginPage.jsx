@@ -9,7 +9,6 @@ import { PiMicrosoftOutlookLogoFill } from "react-icons/pi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import BottomWatermark from "../../../components/BottomWatermark/BottomWatermark.jsx";
 import { LoginFetch } from "../../../services/api.jsx";
-import getPayloadFromToken from "../../../utils/tokenExtractor.jsx";
 import FirstLoginPopUp from "../../../components/FirstLoginPopUp/FirstLoginPopUp.jsx";
 
 
@@ -29,7 +28,7 @@ const LoginPage = () => {
 
 
     // logika prihlásenia (odosle request na backend, ulozi token do localStorage,
-    // ulozi udaje o user do localStorage z tokenu, redirectne usera na korespondujúcu url)
+    // ulozi udaje o user do localStorage, redirectne usera na korespondujúcu url)
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -42,17 +41,10 @@ const LoginPage = () => {
             setLoading(false);
         }
 
-        // extrakcia údajov o userovi z tokenu a uloženie do localStorage
-        const payload = await getPayloadFromToken()
-
-        const userName = (payload.firstName + " " + payload.lastName);
-        const userRole = payload.role;
-
-        localStorage.setItem("userName", userName);
-        localStorage.setItem("userRole", userRole);
-
         // Redirect na change-password pri prvom prihlásení
         const firstLogin = localStorage.getItem("firstLogin");
+
+        const userRole = localStorage.getItem("userRole");
 
         if (firstLogin === "true") {
             setChangePassword(true);
@@ -118,6 +110,8 @@ const LoginPage = () => {
                             <div className="login-input-container">
                                 <MdOutlineEmail className="icon" size={25} />
                                 <input className="login-input"
+                                       autoComplete="email"
+                                       name="email"
                                        type="email"
                                        placeholder="Školský email"
                                        value={email}

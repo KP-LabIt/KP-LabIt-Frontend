@@ -3,8 +3,7 @@
 const BASE_URL = "http://localhost:8000/";
 
 
-
-// Funkcia na prihlasenie ktorá vracia token a stará sa o error handling
+// Funkcia na prihlasenie ktorá sa stará sa o error handling a ukladanie údajov do localStorage
 const LoginFetch = async ({email, password}, setError) => {
 
     const url = BASE_URL + "api/accounts/login/";
@@ -26,7 +25,15 @@ const LoginFetch = async ({email, password}, setError) => {
 
             if (body.token) {
                 localStorage.setItem("token", body.token);
-                return body.token;
+            }
+            if (body.refresh_token) {
+                localStorage.setItem("refreshToken", body.refresh_token);
+            }
+            if (body.user) {
+                const user = body.user;
+                localStorage.setItem("userRole", user.role);
+                localStorage.setItem("userEmail", user.email);
+                localStorage.setItem("userName", user.first_name + " " + user.last_name);
             }
 
             else {
@@ -177,4 +184,36 @@ const ResetPasswordFetchConfirm = async ({uid, token, newPassword, reNewPassword
 
 }
 
-export { LoginFetch, ResetPasswordFetch, ResetPasswordFetchConfirm };
+
+// funkcia pre refreshnutie tokenu
+const RefreshTokenFetch = async (refreshToken) => {
+
+    const url = BASE_URL + "api/accounts/refresh_token/";
+
+    try {
+        // Refresh the access token
+        const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refresh_token: refreshToken })
+        });
+
+        if (!res.ok) {
+            return false;
+        }
+
+        const data = await res.json();
+
+        // Save new tokens
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refresh_token);
+
+
+        return true;
+    } catch (err) {
+        console.error("Failed to refresh token:", err);
+        return false;
+    }
+}
+
+export { LoginFetch, ResetPasswordFetch, ResetPasswordFetchConfirm, RefreshTokenFetch };
