@@ -3,6 +3,42 @@
 const BASE_URL = "http://localhost:8000/";
 
 
+const ErrorHandler = async (res) => {
+
+    // konvertacia odpovede na text alebo json podla content-type
+    const contentType = res.headers.get("content-type") || "";
+    const rawBody = contentType.includes("application/json")
+        ? await res.json().catch(() => null)
+        : await res.text().catch(() => "");
+
+
+    // vytvorenie error massage z odpovede z backendu
+    let detail = "";
+
+    if (typeof rawBody === "string" && rawBody.trim()) {
+        detail = rawBody.trim();
+    }
+    else if (Array.isArray(rawBody) && rawBody.length) {
+        detail = rawBody.join(" ");
+    }
+    else if (rawBody && typeof rawBody === "object") {
+
+        const firstVal = Object.values(rawBody)[0];
+        if (Array.isArray(firstVal)) detail = firstVal.join(" ");
+        else if (typeof firstVal === "string") detail = firstVal;
+    }
+
+    // Orezanie príliš dlhých správ
+    const MAX_LEN = 150;
+    if (detail.length > MAX_LEN) {
+        detail = detail.slice(0, MAX_LEN) + "…";
+    }
+
+    return { detail, rawBody };
+
+}
+
+
 // Funkcia na prihlasenie ktorá sa stará sa o error handling a ukladanie údajov do localStorage
 const LoginFetch = async ({email, password}, setError) => {
 
@@ -17,29 +53,7 @@ const LoginFetch = async ({email, password}, setError) => {
             body: JSON.stringify(data)
         })
 
-
-        // konvertacia odpovede na text alebo json podla content-type
-        const contentType = res.headers.get("content-type") || "";
-        const rawBody = contentType.includes("application/json")
-            ? await res.json().catch(() => null)
-            : await res.text().catch(() => "");
-
-
-        // vytvorenie error massage z odpovede z backendu
-        let detail = "";
-
-        if (typeof rawBody === "string" && rawBody.trim()) {
-            detail = rawBody.trim();
-        }
-        else if (Array.isArray(rawBody) && rawBody.length) {
-            detail = rawBody.join(" ");
-        }
-        else if (rawBody && typeof rawBody === "object") {
-
-            const firstVal = Object.values(rawBody)[0];
-            if (Array.isArray(firstVal)) detail = firstVal.join(" ");
-            else if (typeof firstVal === "string") detail = firstVal;
-        }
+        const { detail, rawBody } = await ErrorHandler(res);
 
         const msg = detail
             ? "Chyba pri prihlasovaní: " + detail
@@ -98,29 +112,7 @@ const ResetPasswordFetch = async (email, setError, setSuccess) => {
             body: JSON.stringify(email)
         })
 
-
-        // konvertacia odpovede na text alebo json podla content-type
-        const contentType = res.headers.get("content-type") || "";
-        const rawBody = contentType.includes("application/json")
-            ? await res.json().catch(() => null)
-            : await res.text().catch(() => "");
-
-
-        // vytvorenie error massage z odpovede z backendu
-        let detail = "";
-
-        if (typeof rawBody === "string" && rawBody.trim()) {
-            detail = rawBody.trim();
-        }
-        else if (Array.isArray(rawBody) && rawBody.length) {
-            detail = rawBody.join(" ");
-        }
-        else if (rawBody && typeof rawBody === "object") {
-
-            const firstVal = Object.values(rawBody)[0];
-            if (Array.isArray(firstVal)) detail = firstVal.join(" ");
-            else if (typeof firstVal === "string") detail = firstVal;
-        }
+        const { detail } = await ErrorHandler(res);
 
         const msg = detail
             ? "Chyba pri odosielaní emailu: " + detail
@@ -161,33 +153,11 @@ const ResetPasswordFetchConfirm = async ({uid, token, newPassword, reNewPassword
             body: JSON.stringify(payload)
         })
 
-        // konvertacia odpovede na text alebo json podla content-type
-        const contentType = res.headers.get("content-type") || "";
-        const rawBody = contentType.includes("application/json")
-            ? await res.json().catch(() => null)
-            : await res.text().catch(() => "");
+        const { detail } = await ErrorHandler(res);
 
-
-        // vytvorenie error massage z odpovede z backendu
-        let detail1 = "";
-
-        if (typeof rawBody === "string" && rawBody.trim()) {
-            detail1 = rawBody.trim();
-        }
-        else if (Array.isArray(rawBody) && rawBody.length) {
-            detail1 = rawBody.join(" ");
-        }
-        else if (rawBody && typeof rawBody === "object") {
-
-            const firstVal = Object.values(rawBody)[0];
-            if (Array.isArray(firstVal)) detail1 = firstVal.join(" ");
-            else if (typeof firstVal === "string") detail1 = firstVal;
-        }
-
-        const msg = detail1
-            ? "Chyba pri zmene hesla: " + detail1
+        const msg = detail
+            ? "Chyba pri zmene hesla: " + detail
             : "Chyba pri zmene hesla.";
-
 
 
         // setnutie success
@@ -199,7 +169,7 @@ const ResetPasswordFetchConfirm = async ({uid, token, newPassword, reNewPassword
         // setnutie erroru
         else {
             setError(msg);
-            console.log(detail1)
+            console.log(detail)
         }
 
     }
