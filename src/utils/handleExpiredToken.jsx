@@ -1,5 +1,6 @@
 // Funkcia, ktorá zabezpečí správne fungovanie pri expirácii tokenu,
 // (napr. použije refresh token pre request nového tokenu)
+// POZOR treba passnut navigate function z useNavigate hooku
 
 import { RefreshTokenFetch } from "../services/api.jsx";
 

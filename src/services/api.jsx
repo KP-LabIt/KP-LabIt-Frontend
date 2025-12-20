@@ -11,26 +11,53 @@ const LoginFetch = async ({email, password}, setError) => {
     const data = { email, password };
 
     try {
-        const response = await fetch(url, {
+        const res = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         })
 
-        const body = await response.json();
 
-        if (response.ok) {
+        // konvertacia odpovede na text alebo json podla content-type
+        const contentType = res.headers.get("content-type") || "";
+        const rawBody = contentType.includes("application/json")
+            ? await res.json().catch(() => null)
+            : await res.text().catch(() => "");
 
-            localStorage.setItem("firstLogin", body.must_change_password);
 
-            if (body.token) {
-                localStorage.setItem("token", body.token);
+        // vytvorenie error massage z odpovede z backendu
+        let detail = "";
+
+        if (typeof rawBody === "string" && rawBody.trim()) {
+            detail = rawBody.trim();
+        }
+        else if (Array.isArray(rawBody) && rawBody.length) {
+            detail = rawBody.join(" ");
+        }
+        else if (rawBody && typeof rawBody === "object") {
+
+            const firstVal = Object.values(rawBody)[0];
+            if (Array.isArray(firstVal)) detail = firstVal.join(" ");
+            else if (typeof firstVal === "string") detail = firstVal;
+        }
+
+        const msg = detail
+            ? "Chyba pri prihlasovaní: " + detail
+            : "Chyba pri prihlasovaní.";
+
+
+        if (res.ok) {
+
+            localStorage.setItem("firstLogin", rawBody.must_change_password);
+
+            if (rawBody.token) {
+                localStorage.setItem("token", rawBody.token);
             }
-            if (body.refresh_token) {
-                localStorage.setItem("refreshToken", body.refresh_token);
+            if (rawBody.refresh_token) {
+                localStorage.setItem("refreshToken", rawBody.refresh_token);
             }
-            if (body.user) {
-                const user = body.user;
+            if (rawBody.user) {
+                const user = rawBody.user;
                 localStorage.setItem("userRole", user.role);
                 localStorage.setItem("userEmail", user.email);
                 localStorage.setItem("userName", user.first_name + " " + user.last_name);
@@ -42,7 +69,8 @@ const LoginFetch = async ({email, password}, setError) => {
         }
 
         else {
-            setError("Chyba pri prihlasovaní: " + body.message);
+            setError(msg);
+            console.log(detail)
         }
     }
 
@@ -62,7 +90,7 @@ const ResetPasswordFetch = async (email, setError, setSuccess) => {
     try {
 
         // odosielanie emailu na backend
-        const response = await fetch(url, {
+        const res = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json" ,
@@ -72,10 +100,10 @@ const ResetPasswordFetch = async (email, setError, setSuccess) => {
 
 
         // konvertacia odpovede na text alebo json podla content-type
-        const contentType = response.headers.get("content-type") || "";
+        const contentType = res.headers.get("content-type") || "";
         const rawBody = contentType.includes("application/json")
-            ? await response.json().catch(() => null)
-            : await response.text().catch(() => "");
+            ? await res.json().catch(() => null)
+            : await res.text().catch(() => "");
 
 
         // vytvorenie error massage z odpovede z backendu
@@ -99,9 +127,8 @@ const ResetPasswordFetch = async (email, setError, setSuccess) => {
             : "Chyba pri odosielaní emailu.";
 
 
-
         // setnutie success
-        if (response.ok) {
+        if (res.ok) {
             setSuccess(true)
         }
 
@@ -158,8 +185,8 @@ const ResetPasswordFetchConfirm = async ({uid, token, newPassword, reNewPassword
         }
 
         const msg = detail1
-            ? "Chyba pri odosielaní emailu: " + detail1
-            : "Chyba pri odosielaní emailu.";
+            ? "Chyba pri zmene hesla: " + detail1
+            : "Chyba pri zmene hesla.";
 
 
 
