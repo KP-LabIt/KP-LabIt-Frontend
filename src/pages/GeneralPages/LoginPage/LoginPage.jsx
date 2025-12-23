@@ -24,7 +24,7 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
 
     // state variable pre change-password popup okno pre oznamenie userovi o zmene hesla po prvom prihlásení
-    const [changePassword, setChangePassword] = useState(false);
+    const [firstLogin, setFirstLogin] = useState(false);
 
 
     // logika prihlásenia (odosle request na backend, ulozi token do localStorage,
@@ -47,7 +47,7 @@ const LoginPage = () => {
         const userRole = localStorage.getItem("userRole");
 
         if (firstLogin === "true") {
-            setChangePassword(true);
+            setFirstLogin(true);
         }
 
         else {
@@ -169,7 +169,7 @@ const LoginPage = () => {
 
             {<BottomWatermark/>}
 
-            { changePassword && <FirstLoginPopUp/>}
+            { firstLogin && <FirstLoginPopUp/>}
 
         </div>
     )

@@ -12,17 +12,23 @@ export default function PasswordResetSuccessPopUp() {
     }
 
     return (
-        <div className="pass-success-confirm-popup-window">
-            <h1 className="pass-success-confirm-title">
-                Vaše heslo bolo úspešne zmenené!
-            </h1>
-            <p className="pass-success-confirm-subtitle">
-                Teraz sa môžete prihlásiť, s vaším novým heslom.
-            </p>
-            <button className="pass-success-confirm-redirect-button" onClick={handleRedirect}>
-                Dokončiť
-            </button>
+
+        <div className="pass-success-popup-page">
+
+            <div className="pass-success-confirm-popup-window">
+                <h1 className="pass-success-confirm-title">
+                    Vaše heslo bolo úspešne zmenené!
+                </h1>
+                <p className="pass-success-confirm-subtitle">
+                    Teraz sa môžete prihlásiť, s vaším novým heslom.
+                </p>
+                <button className="pass-success-confirm-redirect-button" onClick={handleRedirect}>
+                    Dokončiť
+                </button>
+            </div>
+
         </div>
+
     )
 
 }

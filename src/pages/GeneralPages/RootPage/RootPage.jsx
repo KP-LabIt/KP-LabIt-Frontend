@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import BottomWatermark from "../../../components/BottomWatermark/BottomWatermark.jsx";
 
 const RootPage = () => {
 
@@ -14,6 +15,8 @@ const RootPage = () => {
     return (
         <div className="RootPage">
             <h1>Loading...</h1>
+
+            {<BottomWatermark />}
         </div>
     )
 

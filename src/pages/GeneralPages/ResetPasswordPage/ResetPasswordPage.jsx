@@ -36,6 +36,8 @@ const ResetPasswordPage = () => {
                     <div className="reset-pass-input-container">
                         <MdOutlineEmail className="icon" size={25} />
                         <input className="reset-pass-input"
+                               name="email"
+                               autoComplete="email"
                                type={email}
                                placeholder="Zadajte školský email"
                                value={email}

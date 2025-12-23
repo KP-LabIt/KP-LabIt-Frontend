@@ -1,5 +1,6 @@
 import './UnauthorizedPage.css'
 import { useNavigate } from 'react-router-dom';
+import BottomWatermark from "../../../components/BottomWatermark/BottomWatermark.jsx";
 
 const UnauthorizedPage = () => {
 
@@ -16,6 +17,8 @@ const UnauthorizedPage = () => {
             <button onClick={handleRedirect}>
                 Späť
             </button>
+
+            {<BottomWatermark />}
         </div>
     )
 

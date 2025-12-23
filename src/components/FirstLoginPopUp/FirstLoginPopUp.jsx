@@ -1,29 +1,37 @@
 import './FirstLoginPopUp.css'
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function FirstLoginPopUp() {
 
     const navigate = useNavigate();
 
     const handleRedirect = () => {
-        navigate("/reset-password");
+        navigate("/change-password");
     }
 
     return (
-        <div className="login-popup-window">
-            <h1 className="login-popup-title">
-                Upozornenie!
-            </h1>
-            <h2 className="login-popup-subtitle">
-                Toto je vaše prvé prihlásenie, zmeňte si heslo!
-            </h2>
-            <p className="login-popup-text">
-                Detekovali sme, že ste si ešte nezmenili heslo,
-                musíte si automaticky vygenerované heslo zmeniť na vaše vlastné.
-            </p>
-            <button className="login-popup-redirect-button" onClick={handleRedirect}>
-                Zmeniť heslo
-            </button>
+
+        <div className="first-login-popup-page">
+
+            <div className="login-popup-window">
+
+                <h1 className="login-popup-title">
+                    Upozornenie!
+                </h1>
+                <h2 className="login-popup-subtitle">
+                    Zistili sme, že stále používate prednastavené heslo.
+                </h2>
+                <p className="login-popup-text">
+                    Používate predgenerované heslo, ktoré sme vám zaslali.
+                    Pre bezpečnosť účtu si ho prosím zmeňte kliknutím na tlačidlo nižšie.
+                </p>
+
+                <button onClick={handleRedirect}>
+                    Zmeniť heslo
+                </button>
+
+            </div>
+
         </div>
     )
 

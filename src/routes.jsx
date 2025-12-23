@@ -12,6 +12,7 @@ import TeacherActivityPage from './pages/TeacherPages/TeacherActivityPage/Teache
 import AdminPage from './pages/AdminPages/AdminPage/AdminPage.jsx';
 import ResetPasswordPage from './pages/GeneralPages/ResetPasswordPage/ResetPasswordPage.jsx';
 import ResetPasswordConfirmPage from "./pages/GeneralPages/ResetPasswordConfirmPage/ResetPasswordConfirmPage.jsx";
+import ChangePasswordPage from "./pages/GeneralPages/ChangePasswordpage/ChangePasswordPage.jsx";
 
 
 export default function AppRouter() {
@@ -64,7 +65,7 @@ export default function AppRouter() {
                 element: (
                     <ProtectedRoute
                         allowedRoles={["student", "teacher", "admin"]}
-                        element={<ResetPasswordPage />}
+                        element={<ChangePasswordPage />}
                     />
                 ),
             },

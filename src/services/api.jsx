@@ -213,4 +213,54 @@ const RefreshTokenFetch = async (refreshToken) => {
     }
 }
 
-export { LoginFetch, ResetPasswordFetch, ResetPasswordFetchConfirm, RefreshTokenFetch };
+
+const ChangePasswordFetch = async ({newPassword, oldPassword}, setError, setSuccess) => {
+
+    const url = BASE_URL + "api/accounts/change_password/";
+
+    if (oldPassword === newPassword) {
+        setError("Heslá, nemôžu byť rovnaké.")
+        return
+    }
+
+    const user = { "old_password": oldPassword, "new_password": newPassword };
+
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" ,
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(user)
+        })
+
+        const { detail } = await ErrorHandler(res);
+
+        const msg = detail
+            ? "Chyba pri zmene hesla: " + detail
+            : "Chyba pri zmene hesla.";
+
+        // setnutie success
+        if (res.ok) {
+            const mustChangePassword = "false";
+            localStorage.setItem("firstLogin", mustChangePassword);
+
+            setSuccess(true)
+        }
+
+        // setnutie erroru
+        else {
+            setError(msg);
+            console.log(detail)
+        }
+    }
+
+catch (err) {
+        setError("Chyba pri odosielaní dát: " + err.message)
+        console.log(err)
+    }
+
+}
+
+export { LoginFetch, ResetPasswordFetch, ResetPasswordFetchConfirm, RefreshTokenFetch, ChangePasswordFetch };
