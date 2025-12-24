@@ -1,6 +1,7 @@
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaHome, FaCalendarAlt, FaEnvelope } from "react-icons/fa";
+import { RiPoliceBadgeLine } from "react-icons/ri";
 import logo from "../../assets/kp-logo-description.png";
 
 
@@ -31,7 +32,7 @@ export default function Navbar() {
 
                 <div className="navbar-user" onClick={() => navigate(routes.profile)}>
                     <span className="navbar-user-icon">
-                        <FaUser />
+                        {userRole === "admin" ? <RiPoliceBadgeLine /> : <FaUser />}
                     </span>
                     <span>{userName}</span>
                 </div>
