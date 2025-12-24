@@ -1,0 +1,74 @@
+.navbar {
+    position: fixed;
+    top: 2px;
+    display: flex;
+    height: 10vh;
+    width: 99.25vw;
+    background-color: rgba(35, 35, 35, 0.85);
+    backdrop-filter: blur(15px);
+    color: white;
+    border: 2px solid rgb(21, 57, 2);
+    box-shadow: 0 0 20px rgb(21, 57, 2, 0.75);
+    border-radius: 1rem;
+}
+
+/* LEFT */
+.navbar-left {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-right: 1px solid #153902;
+}
+
+.navbar-logo {
+    height: 75%;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.navbar-user-icon {
+    font-size: 2rem;
+    margin-top: 8px;
+}
+
+.navbar-user:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* RIGHT */
+.navbar-right {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-left: 2px solid #153902;
+}
+
+.navbar-right svg {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.navbar-right svg:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+.navbar-divider {
+    width: 2px;
+    height: 25px;
+    background-color: #153902;
+}
