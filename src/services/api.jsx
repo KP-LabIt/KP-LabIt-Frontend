@@ -1,6 +1,6 @@
 // Všetky requesty na backend pokope (pre čistejší kód a jednoduchší maintenance)
 
-const BASE_URL = "http://localhost:8000/";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 const ErrorHandler = async (res) => {
